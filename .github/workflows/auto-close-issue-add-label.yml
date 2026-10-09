@@ -1,7 +1,11 @@
 name: Auto-close issue and add label
 on:
   push:
-    branches: [main]  # or your default branch
+    branches: [main]
+
+permissions:
+  issues: write
+  
 jobs:
   close-issue:
     runs-on: ubuntu-latest
