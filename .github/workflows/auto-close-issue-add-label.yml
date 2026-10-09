@@ -1,0 +1,31 @@
+name: Auto-close issue and add label
+on:
+  push:
+    branches: [main]  # or your default branch
+jobs:
+  close-issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check commit message
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const commitMessage = context.payload.head_commit.message;
+            const issueNumberMatch = commitMessage.match(/#(\d+)/);
+            if (issueNumberMatch && (commitMessage.includes("closes") || commitMessage.includes("fixes") || commitMessage.includes("resolves"))) {
+              const issueNumber = issueNumberMatch[1];
+              // Close the issue
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                state: "closed"
+              });
+              // Add a label
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                labels: ["done"]
+              });
+            }
