@@ -1,2 +1,2 @@
 
-echo "TEN"
+echo "10"
