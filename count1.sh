@@ -1,4 +1,4 @@
 
-echo "1"
+echo "ONE(1)"
 
 ./count2.sh
